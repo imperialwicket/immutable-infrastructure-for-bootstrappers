@@ -1,0 +1,60 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "environment": "ii4b",
+    "node": "bare",
+    "ami": "ami-459a382e",
+    "ami_user": "ubuntu",
+    "user_data": "",
+    "region": "us-east-1",
+    "availability_zone": "us-east-1a",
+    "instance_type": "t1.micro"
+  },
+  "builders": [
+    {
+      "name": "default",
+      "type": "amazon-ebs",
+      "access_key": "{{ user `aws_access_key` }}",
+      "secret_key": "{{ user `aws_secret_key` }}",
+      "availability_zone": "{{ user `availability_zone` }}",
+      "region": "{{ user `region` }}",
+      "ssh_username": "{{ user `ami_user` }}",
+      "source_ami": "{{ user `ami` }}",
+      "instance_type": "{{ user `instance_type` }}",
+      "ami_name": "{{ user `environment` }}-{{ user `node` }}-{{ timestamp }}",
+      "run_tags":
+        {
+        "Name": "bakery-{{ user `environment` }}-{{ user `node` }}",
+        "Environment": "{{ user `environment` }}",
+        "Node": "{{ user `node` }}",
+        "Commit": "{{ user `commit` }}"
+        },
+      "tags":
+        {
+        "Name": "{{ user `environment` }}-{{ user `node` }}-{{ timestamp }}",
+        "Environment": "{{ user `environment` }}",
+        "Node": "{{ user `node` }}"
+        },
+      "security_group_id": "{{ user `security_group_id` }}",
+      "user_data": "{{ user `user_data` }}"
+    }
+  ],
+  "provisioners":[
+    { "type": "file",
+      "source": "./base",
+      "destination": "/tmp"
+    },
+    { "type": "shell",
+      "script": "base/base.sh"
+    },
+    { "type": "file",
+      "source": "./{{ user `node` }}",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "script": "{{ user `node` }}/{{ user `node` }}.sh"
+    }
+  ]
+}
