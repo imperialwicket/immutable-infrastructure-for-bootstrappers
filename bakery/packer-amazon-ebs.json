@@ -12,7 +12,7 @@
   },
   "builders": [
     {
-      "name": "default",
+      "name": "ii4b",
       "type": "amazon-ebs",
       "access_key": "{{ user `aws_access_key` }}",
       "secret_key": "{{ user `aws_secret_key` }}",
@@ -24,11 +24,11 @@
       "ami_name": "{{ user `environment` }}-{{ user `node` }}-{{ timestamp }}",
       "run_tags":
         {
-        "Name": "bakery-{{ user `environment` }}-{{ user `node` }}",
+        "Name": "bakery-{{ user `environment` }}-{{ user `node` }}"
         },
       "tags":
         {
-        "Name": "{{ user `environment` }}-{{ user `node` }}-{{ timestamp }}",
+        "Name": "{{ user `environment` }}-{{ user `node` }}-{{ timestamp }}"
         }
     }
   ],
