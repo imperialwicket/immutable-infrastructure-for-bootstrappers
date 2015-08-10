@@ -29,8 +29,7 @@
       "tags":
         {
         "Name": "{{ user `environment` }}-{{ user `node` }}-{{ timestamp }}",
-        },
-      "security_group_id": "{{ user `security_group_id` }}",
+        }
     }
   ],
   "provisioners":[
