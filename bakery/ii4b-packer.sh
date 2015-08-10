@@ -59,7 +59,7 @@ do
       sshuser="-var \"ami_user=$OPTARG\""
       ;;
     r)
-      release="-var \"region=$OPTARG\""
+      region="-var \"region=$OPTARG\""
       ;;
     z)
       zone="-var \"availability_zone=$OPTARG\""
@@ -97,6 +97,6 @@ fi
 export PACKER_NO_COLOR=1
 
 packer build -var-file=$awsCredsFile $env $node $ami $sshuser \
-  $release $zone $instance packer-amazon-ebs.json # \
+  $region $zone $instance packer-amazon-ebs.json # \
 #  | logger -i -t packer &
 
