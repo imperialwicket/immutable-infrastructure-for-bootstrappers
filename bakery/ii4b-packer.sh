@@ -4,7 +4,7 @@
 
 # AWS credentials file - this is in .gitignore, if you move it, put credentials 
 # outside the repo or update gitignore so it doesn't end up in source control.
-awsCredsFile=".packer-aws-credentials.json"
+awsCredsFile="/vagrant/bakery/.packer-aws-credentials.json"
 
 # Username for key gen
 username="ii4b"
