@@ -4,7 +4,8 @@
 
 # AWS credentials file - this is in .gitignore, if you move it, put credentials 
 # outside the repo or update gitignore so it doesn't end up in source control.
-awsCredsFile="/vagrant/bakery/.packer-aws-credentials.json"
+basedir="/vagrant/bakery"
+awsCredsFile=".packer-aws-credentials.json"
 
 # Username for key gen
 username="ii4b"
@@ -74,29 +75,31 @@ do
 done
 
 # Need aws creds for Packer
-if ! [ -r $awsCredsFile ]; then
+creds=$basedir/$awsCredsFile
+if ! [ -r $creds ]; then
   awsInfo
   read -e -p "AWS access key id: " accessKey
   read -es -p "AWS secret access key: " secretKey
   echo ""
 
-  touch $awsCredsFile
-  echo -e "{\n  \"aws_access_key\":\"$accessKey\"," > $awsCredsFile
-  echo -e "  \"aws_secret_key\":\"$secretKey\"\n}" >> $awsCredsFile
+  touch $creds
+  echo -e "{\n  \"aws_access_key\":\"$accessKey\"," > $creds
+  echo -e "  \"aws_secret_key\":\"$secretKey\"\n}" >> $creds
 fi
 
 # Just make a new key. You can use this or replace with an
 # existing or alternative key.
-if ! [ -r base/keys/$username ]; then
-  mkdir -p base/keys/
-  ssh-keygen -t rsa -N "" -q -f base/keys/$username
-  echo "Created base/keys/$username for ssh connection."
+keys=$basedir/base/keys
+if ! [ -r $keys/$username ]; then
+  mkdir -p $keys
+  ssh-keygen -t rsa -N "" -q -f $keys/$username
+  echo "Created $keys/$username for ssh connection."
 fi
 
 # Disable packer color output
 export PACKER_NO_COLOR=1
 
-packer build -var-file=$awsCredsFile $env $node $ami $sshuser \
+cd $basedir
+packer build -var-file=$creds $env $node $ami $sshuser \
   $region $zone $instance packer-amazon-ebs.json # \
 #  | logger -i -t packer &
-
