@@ -23,7 +23,6 @@ OPTIONS:
   -n  Node (base)
   -a  Ami id (ami-7be63d10)
   -s  SSH username (ubuntu)
-  -u  User data ('')
   -r  Region (us-east-1)
   -z  Availability Zone (us-east)
   -i  Instance type (t1.micro)
@@ -40,7 +39,7 @@ Packer's Amazon EBS builder (https://packer.io/docs/builders/amazon.html).
 EOF
 }
 # Options
-while getopts ":e:n:a:s:u:r:z:i:h" flag
+while getopts ":e:n:a:s:r:z:i:h" flag
 do
   case "$flag" in
     h)
@@ -58,9 +57,6 @@ do
       ;;
     s)
       sshuser="-var \"ami_user=$OPTARG\""
-      ;;
-    u)
-      userdata="-var \"user_data=$OPTARG\""
       ;;
     r)
       release="-var \"region=$OPTARG\""
@@ -101,6 +97,6 @@ fi
 export PACKER_NO_COLOR=1
 
 packer build -var-file=$awsCredsFile $env $node $ami $sshuser \
-  $userdata $release $zone $instance packer-amazon-ebs.json # \
+  $release $zone $instance packer-amazon-ebs.json # \
 #  | logger -i -t packer &
 

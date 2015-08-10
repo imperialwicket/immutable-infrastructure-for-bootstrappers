@@ -6,7 +6,6 @@
     "node": "bare",
     "ami": "ami-459a382e",
     "ami_user": "ubuntu",
-    "user_data": "",
     "region": "us-east-1",
     "availability_zone": "us-east-1a",
     "instance_type": "t1.micro"
@@ -26,18 +25,12 @@
       "run_tags":
         {
         "Name": "bakery-{{ user `environment` }}-{{ user `node` }}",
-        "Environment": "{{ user `environment` }}",
-        "Node": "{{ user `node` }}",
-        "Commit": "{{ user `commit` }}"
         },
       "tags":
         {
         "Name": "{{ user `environment` }}-{{ user `node` }}-{{ timestamp }}",
-        "Environment": "{{ user `environment` }}",
-        "Node": "{{ user `node` }}"
         },
       "security_group_id": "{{ user `security_group_id` }}",
-      "user_data": "{{ user `user_data` }}"
     }
   ],
   "provisioners":[
